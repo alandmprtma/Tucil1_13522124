@@ -1,0 +1,12 @@
+Max Score: 31
+
+Solution:
+55 E9 BD 
+
+Coordinates:
+1 1
+1 5
+3 5
+
+Execution Time:
+2 ms

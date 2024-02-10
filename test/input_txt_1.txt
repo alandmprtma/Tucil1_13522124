@@ -1,0 +1,16 @@
+Max Score: 10
+
+Solution:
+E9 55 55 7A E9 55 BD 
+
+Coordinates:
+1 1
+1 2
+2 2
+2 1
+3 1
+3 3
+1 3
+
+Execution Time:
+8 ms

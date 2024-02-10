@@ -1,0 +1,11 @@
+Max Score: 80
+
+Solution:
+1C BD 
+
+Coordinates:
+3 1
+3 2
+
+Execution Time:
+0 ms
