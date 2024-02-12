@@ -1,12 +1,16 @@
-Max Score: 31
+Max Score: 200
 
 Solution:
-55 E9 BD 
+E9 E9 55 1C 55 7A 55 
 
 Coordinates:
 1 1
-1 5
-3 5
+1 2
+2 2
+2 4
+5 4
+5 3
+3 3
 
 Execution Time:
-2 ms
+468 ms
