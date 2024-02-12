@@ -1,80 +1,146 @@
+<div align="center">
+  <img src="img/cyberpunk_2077.png" alt="Cyberpunk logo" width="375"/>
+</div>
+
 # Tucil1_13522124
-> Cyberpunk 2077 Breach Protocol Solver with Brute Force Algorithm
+> Cyberpunk 2077 Breach Protocol Solver with **Brute Force Algorithm**
 ## 📑Table of Contents
   - [Description](#description)
-  - [General Information](#general-information)
+  - [Technologies Used](#technologies-used)
+  - [Installation](#installation)
+  - [How to Run](#how-to-use)
+  - [Features](#features)
+  - [Structure](#structure)
   - [Screenshots](#screenshots)
   - [Contributor](#contributor)
-  - [Technologies Used](#technologies-used)
-  - [Features](#features)
-  - [How to Use](#how-to-use)
-    - [Dependencies](#dependencies)
-    - [Installation](#installation)
-    - [Program Execution](#program-execution)
 
-## Description
-Global Conquest adalah sebuah game strategi yang dibuat menggunakan bahasa pemrograman deklaratif Prolog (GNU Prolog). Game ini memberikan pemain kesempatan untuk mendominasi dunia melalui berbagai tantangan dan strategi. Tugas besar ini bertujuan untuk mengintegrasikan berbagai konsep Logika Komputasional IF2121 yang telah dipelajari, seperti rekurens, list, cut, fail, dan loop. Selain itu, tugas besar ini juga bertujuan untuk memperdalam pemahaman tentang pemrograman deklaratif menggunakan Prolog.
+## 🖥️ Description
+Cyberpunk 2077 Breach Protocol is a hacking minigame in the video game Cyberpunk 2077. This minigame is a simulation of hacking a local network from ICE (Intrusion Countermeasures Electronics) in the game Cyberpunk 2077. This **Python Language Program** can find the most optimal solution to the Breach Protocol game with any combination of matrix, sequence, and buffer size using the **brute force algorithm**.
 
-## Configuration Guide
+## 🦾 Technologies Used (Dependencies)
+- Python Programming Language
 
-## How to Run
+## 🔧 Installation
+Python Installation:
+1. Visit the official Python website at https://www.python.org/downloads/ and download the version of Python that suits your operating system.
+2. Make sure to select the "Add Python to PATH" option during the installation process.
+3. Select the location where Python will be installed. By default, Python will be installed in the `C:\Program Files\Python<version> directory`.
+4. After the installation process is complete, open a terminal or command prompt, and type the command `python --version`. If Python is installed correctly, you will see the version of Python installed.
 
-## Technologies Used (Dependencies)
-- Programming Logic Language
-- GNU Prolog console
+Colorama Library:
+1. Execute `pip install colorama`.
 
-## Features
-Berikut adalah fitur-fitur atau perintah yang terdapat pada permainan Global Conquest dengan bahasa Pemrograman GNU Prolog beserta deskripsi singkat dari fitur tersebut.
-| No. | Fitur | Deskripsi Singkat|
-|---|---|---|
-| 1 | displayMap. | Menampilkan peta dunia yang berisi 24 wilayah dengan 6 benua|
-| 2 | startGame. | Digunakan diawal sebelum permainan dimulai untuk memulai game yang baru|
-| 3 | takeLocation(LocationID). | Pemain mengambil 1 lokasi untuk dijadikan wilayah dibawah kekuasaan-nya. |
-| 4 | placeTroops(LocationID, JumlahTroops). | Menaruh seluruh sisa pasukannya ke dalam lokasi pilihan mereka sebanyak yang mereka inginkan. |
-| 5 | placeAutomatic. | Menaruh pasukan secara otomatis. |
-| 6 | endTurn. | Command ini digunakan bila player yang saat ini dalam giliran sudah selesai melakukan putarannya, dan ingin melanjutkan ke player Selanjutnya. |
-| 7 | draft(LocationID, Troops). | Command ini dipakai apabila player ingin menaruh tentara tambahannya ke dalam salah satu lokasi yang dimiliki oleh player. |
-| 8 | move(LocationID1, LocationID2, Troops). | player dapat memindahkan tentara di wilayahnya. |
-| 9 | attack. | Command ini dapat dipakai player apabila player merasa percaya diri dan ingin menyerang suatu Wilayah. |
-| 10 | risk. | Command ini dapat dipakai player apabila player ingin mengambil sebuah ‘risk card’. Pada saat player mengambil ‘risk card’ |
-| 11 | checkLocationDetail(LocationID). | Command ini dapat dipakai player apabila player ingin mengakses detail informasi dari sebuah lokasi, baik yang dimilikinya, maupun yang dimiliki player lain. |
-| 12 | checkPlayerDetail(PlayerID). | dapat dipakai player untuk mengakses informasi detail dari player lain, dimana nanti akan ditunjukan nama pemain, benua yang dikuasai, total wilayah, total tentara aktif, dan total tentara tambahan dari player tersebut. |
-| 13 | checkPlayerTerritories(PlayerID). | Command ini dapat dipakai player untuk mengakses informasi mengenai lokasi lokasi yang dikuasai oleh player ‘PlayerID’ dari semua benua, dan menampilkan kode lokasi, nama lokasi dan juga jumlah tentara yang ada pada lokasi tersebut. |
-| 14 | checkIncomingTroops(PlayerID). | Command ini dapat dipakai player untuk mengakses informasi mengenai tentara tambahan yang akan datang ke player ‘PlayerID’ pada saat player tersebut mengakses fungsi endTurn. |
-| 15 | win mechanism | Player menang apabila dia merupakan player terakhir yang tersisa atau the last man standing. |
-| 16 | lose mechanism | Player kalah apabila dia merupakan player yang sudah tidak memiliki wilayah yang dikuasai. |
+## 🏃‍♂️ How to Run
+1. Clone the repository to your local files. Access the repository [here](repository-link). Open the terminal and run `git clone  https://github.com/alandmprtma/Tucil1_13522124.git`
+2. Ensure the directory is set to `Tucil1_13522124` and run `cd src` to change the directory to src folder.
+3. Execute `python3 main.py`.
+4. You can find the optimal solution by using input from `file.txt in config folder` or `generate random input`.
 
-## Structure
+## 🏋 Features
+The following are the features or commands contained in the Command Line Interface (CLI) Cyberpunk 2077 breach protocol solver program in the Python programming language along with a brief description of these features:
+1. Input from file.txt
+
+The game matrix can be generated by reading a file with the extension .txt which has the following format:
 ```bash
-.
-├── doc
-│   ├── Progress1_G32.pdf
-│   ├── Progress2_G32.pdf
-│   └── Laporan_G32.pdf
-├── src
-│   ├── f01_map.pl
-│   ├── f02_initiating.pl
-│   ├── f03_endturn.pl
-│   ├── f04_draft.pl
-│   ├── f05_move.pl
-│   ├── f06_attack.pl
-│   ├── f07_risk.pl
-│   ├── f08_wilayah.pl
-│   ├── f09_player.pl
-│   ├── main.pl
-│   └── sortorder_initiating.pl
-├── img
-    ├── tampilan-displayMap.jpg
-    └── tampilan-startGame.jpg
+buffer_size
+matrix_width matrix_height
+matrix
+number_of_sequences
+sequences_1
+sequences_1_reward
+sequences_2
+sequences_2_reward
+…
+sequences_n
+sequences_n_reward
+```
+The following is an example of an input file.txt that can be used:
+```bash
+7
+6 6
+7A 55 E9 E9 1C 55
+55 7A 1C 7A E9 55
+55 1C 1C 55 E9 BD
+BD 1C 7A 1C 55 BD
+BD 55 BD 7A 1C 1C
+1C 55 55 7A 55 7A
+3
+BD E9 1C
+15
+BD 7A BD
+20
+BD 1C BD 55
+30
 ```
 
-## Screenshots
-### Tampilan startGame.
-![startGame.](./img/tampilan-startGame.png)
-### Tampilan displayMap.
-![displayMap.](./img/tampilan-displayMap.png)
 
-## Contributor
+2. Generate random input
+
+Matrix & sequences (along with their prize weights) can also be generated automatically by the program with input via CLI in the form of number of unique_tokens, token, buffer_size, matrix_size, sequence_number, and maximum_sequence_size (doesn't have to be in order). The output for this feature should display both the Matrix and the sequence game used.
+```bash
+5 // Number of unique_tokens
+BD 1C 7A 55 E9 //token
+7 //buffer_size
+6 6 //matrix_size
+3 //sequence_number
+4 //maximum_sequence_size
+```
+
+## 🗂️ Structure
+```bash
+.
+├── config
+│   ├── input_1.txt
+│   ├── input_2.txt
+│   ├── input_3.txt
+│   ├── nosolution_1.txt
+│   ├── nosolution_2.txt
+│   ├── nosolution_3.txt
+│   └── spek.txt
+├── doc
+│   └── Tucil1_K3_13522124_Aland Mulia Pratama.pdf
+├── img
+│   ├── inputfile.png
+│   ├── mainmenu.png
+│   ├── solverview.png
+│   ├── cyberpunk_2077.png
+│   └── outputfile.png
+├── src
+│   └── main.py
+├── test
+│   ├── input_txt_1.txt
+│   ├── input_txt_2.txt
+│   ├── input_txt_3.txt
+│   └── sortorder_initiating.pl
+└── README.md
+```
+
+## 📸 Screenshots
+### Main Menu
+<div align="center">
+  <img src="img/mainmenu.png" alt="main menu" width="600"/>
+  <p><i>Main Menu Display</i></p>
+</div>
+
+### Input file.txt
+<div align="center">
+  <img src="img/inputfile.png" alt="input file.txt" width="150"/>
+  <p><i>Input with file.txt</i></p>
+</div>
+
+### Breach Protocol Solver Display
+<div align="center">
+  <img src="img/solverview.png" alt="solver display" width="600"/>
+  <p><i>Breach Protocol Solver Display</i></p>
+</div>
+
+### Output file.txt
+<div align="center">
+  <img src="img/outputfile.png" alt="output file.txt" width="150"/>
+  <p><i>Output with file.txt</i></p>
+</div>
+
+## 🪪 Contributor
 | Nama | NIM |
 |---|---|
 | Aland Mulia Pratama | 13522124 |

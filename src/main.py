@@ -45,9 +45,9 @@ while (running == True):
         sequences = []
         sequences_score = []
         for _ in range(max_sequences):
-            sequence_length = random.randint(1, 4)  # Jumlah token pada sekuens
-            sequence = [random.choice(['7A', '55', 'E9', '1C', 'BD']) for _ in range(sequence_length)]
-            sequences.append(sequence)
+        sequence_length = random.randint(1, 4)
+        sequence = [random.choice(['7A', '55', 'E9', '1C', 'BD']) for _ in range(sequence_length)]
+        sequences.append(sequence)
             sequences_score.append(random.randint(1, 5)*10*sequence_length)  # Nilai score secara acak antara 1 hingga 50
         
         return code_matrix, buffer_size, sequences, sequences_score
