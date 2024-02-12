@@ -1,18 +1,18 @@
 <div align="center">
-  <img src="img/cyberpunk_2077.png" alt="Cyberpunk logo" width="375"/>
+  <img src="img/Cyberpunk_2077.png" alt="Cyberpunk logo" width="375"/>
 </div>
 
 # Tucil1_13522124
 > Cyberpunk 2077 Breach Protocol Solver with **Brute Force Algorithm**
 ## 📑Table of Contents
-  - [Description](#description)
-  - [Technologies Used](#technologies-used)
-  - [Installation](#installation)
-  - [How to Run](#how-to-use)
-  - [Features](#features)
-  - [Structure](#structure)
-  - [Screenshots](#screenshots)
-  - [Contributor](#contributor)
+  - [Description](#%EF%B8%8F-description)
+  - [Technologies Used](#-technologies-used-dependencies)
+  - [Installation](#-installation)
+  - [How to Run](#%EF%B8%8F-how-to-run)
+  - [Features](#-features)
+  - [Structure](#%EF%B8%8F-structure)
+  - [Screenshots](#-screenshots)
+  - [Contributor](#-contributor)
 
 ## 🖥️ Description
 Cyberpunk 2077 Breach Protocol is a hacking minigame in the video game Cyberpunk 2077. This minigame is a simulation of hacking a local network from ICE (Intrusion Countermeasures Electronics) in the game Cyberpunk 2077. This **Python Language Program** can find the most optimal solution to the Breach Protocol game with any combination of matrix, sequence, and buffer size using the **brute force algorithm**.
