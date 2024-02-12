@@ -13,9 +13,9 @@ while (running == True):
         sequences_score = []
         with open(filename, 'r') as file:
             buffer_size = int(file.readline().strip())
-            matrix_width, _ = map(int, file.readline().strip().split())
+            matrix_width , matrix_height = map(int, file.readline().strip().split())
             
-            for _ in range(matrix_width):
+            for _ in range(matrix_height):
                 row = file.readline().strip().split()
                 matrix.append(row)
             num_sequences = int(file.readline().strip())
@@ -24,13 +24,13 @@ while (running == True):
                 score = int(file.readline().strip())
                 sequences.append(sequence)
                 sequences_score.append(score)
-        return buffer_size, matrix, sequences, sequences_score
+        return matrix_width, matrix_height, buffer_size, matrix, sequences, sequences_score
 
     # Prosedur generate input secara random
     def generaterandominput():
         # Maksimum jumlah kolom dan baris
         max_rows = random.randint(3,6)
-        max_columns = max_rows
+        max_columns = random.randint(3,6)
         
         # Maksimum jumlah sequences dan sequences_score
         max_sequences = random.randint(1, 3)
@@ -45,12 +45,12 @@ while (running == True):
         sequences = []
         sequences_score = []
         for _ in range(max_sequences):
-        sequence_length = random.randint(1, 4)
-        sequence = [random.choice(['7A', '55', 'E9', '1C', 'BD']) for _ in range(sequence_length)]
-        sequences.append(sequence)
+            sequence_length = random.randint(2, 4)  # Jumlah token pada sekuens
+            sequence = [random.choice(['7A', '55', 'E9', '1C', 'BD']) for _ in range(sequence_length)]
+            sequences.append(sequence)
             sequences_score.append(random.randint(1, 5)*10*sequence_length)  # Nilai score secara acak antara 1 hingga 50
         
-        return code_matrix, buffer_size, sequences, sequences_score
+        return max_columns, max_rows, code_matrix, buffer_size, sequences, sequences_score
 
 
     # Inisialisasi colorama
@@ -97,11 +97,11 @@ while (running == True):
         print_neon(text_to_print)
         print(Fore.RED + "Please input the filename (without the .txt extension) from the config folder")
         print(">> ", end = "")
-        filename = "./config/" + input() + ".txt"
-        buffer_size, code_matrix, sequences, sequences_score = readfromfile(filename)
+        filename = "../config/" + input() + ".txt"
+        matrix_width, matrix_height, buffer_size, code_matrix, sequences, sequences_score = readfromfile(filename)
         os.system("cls" if os.name == "nt" else "clear") #membersihkan layar CLI
     elif input_method == "2":
-        code_matrix, buffer_size, sequences, sequences_score = generaterandominput()
+        matrix_width, matrix_height, code_matrix, buffer_size, sequences, sequences_score = generaterandominput()
         os.system("cls" if os.name == "nt" else "clear") #membersihkan layar CLI 
 
     # mencetak code_matrix
@@ -125,221 +125,147 @@ while (running == True):
     start_time = time.time()
 
     class DuplicatedCoordinateException(Exception):
-
         pass
 
-
-
-    # All paths match the following pattern:
-
-    # [(0, a), (b, a), (b, c), (d, c), ...]
+    # lintasan koordinat memenuhi syarat seperti berikut:
+    # [(a, 1), (a, b), (c, b), (c, d), ...]
 
     class Path():
-
         def __init__(self, coords=[]):
-
             self.coords = coords
 
-
-
         def __add__(self, other):
-
             new_coords = self.coords + other.coords
-
             if any(map(lambda coord: coord in self.coords, other.coords)):
-
                 raise DuplicatedCoordinateException()
-
             return Path(new_coords)
 
-
-
         def __repr__(self):
-
             return str(self.coords)
 
 
     class SequenceScore():
-
         def __init__(self, sequence, buffer_size, reward_level=0):
-
             self.max_progress = len(sequence)
-
             self.sequence = sequence
-
             self.score = 0
-
             self.reward_level = reward_level
-
             self.buffer_size = buffer_size
 
-
-
         def compute(self, compare):
-
             if not self.__completed():
-
                 if self.sequence[self.score] == compare:
-
                     self.__increase()
-
                 else:
-
                     self.__decrease()
 
-
-
-        # When the head of the sequence matches the targeted node, increase the score by 1
-
-        # If the sequence has been completed, set the score depending on the reward level
-
+        # Ketika kepala urutan cocok dengan node yang ditargetkan, tambah skornya sebesar 1
+        # Jika urutannya sudah selesai, atur skornya tergantung level hadiahnya
         def __increase(self):
-
             self.buffer_size -= 1
-
             self.score += 1
 
             if self.__completed():
-
-                # Can be adjusted to maximize either:
-
-                #   a) highest quality rewards, possibly lesser quantity
-
                 self.score = 10 ** (self.reward_level + 1)
 
-                #   b) highest amount of rewards, possibly lesser quality
-
-                # self.score = 100 * (self.reward_level + 1)
-
-
-
-        # When an incorrect value is matched against the current head of the sequence, the score is decreased by 1 (can't go below 0)
-
-        # If it's not possible to complete the sequence, set the score to a negative value depending on the reward 
-
+        # Ketika nilai yang salah dicocokkan dengan urutan teratas saat ini, skor dikurangi 1 (tidak boleh di bawah 0)
+        # Jika urutannya tidak dapat diselesaikan, tetapkan skor ke nilai negatif tergantung pada hadiahnya 
         def __decrease(self):
-
             self.buffer_size -= 1
-
             if self.score > 0:
-
                 self.score -= 1
-
             if self.__completed():
-
                 self.score = -self.reward_level - 1
 
-
-
-        # A sequence is considered completed if no further progress is possible or necessary
-
+        # Suatu urutan dianggap selesai jika tidak ada kemajuan lebih lanjut yang mungkin atau tidak diperlukan
         def __completed(self):
-
             return self.score < 0 or self.score >= self.max_progress or self.buffer_size < self.max_progress - self.score
 
 
-
     class PathScore():
-
-
-
         def __init__(self, path, sequences, buffer_size):
-
             self.score = None
-
             self.path = path
-
             self.sequence_scores = [SequenceScore(sequence, buffer_size, reward_level) for reward_level, sequence in enumerate(sequences)]
 
-
-
-        def compute(self): # Returns the sum of the individual sequence scores
-
+        def compute(self): # Mengembalikan jumlah skor urutan individu
             if self.score != None:
-
                 return self.score
-
             for row, column in self.path.coords:
-
                 for seq_score in self.sequence_scores:
-
                     seq_score.compute(code_matrix[row][column])
-
             self.score = sum(map(lambda seq_score: seq_score.score, self.sequence_scores))
-
             return self.score
-        
-    def generate_paths(buffer_size):
-
+    
+    def generate_paths_square(buffer_size):
         completed_paths = []
-
-
-
-        # Return next available row/column for specified turn and coordinate.
-
-        # If it's the 1st turn the index is 0 so next_line would return the 
-
-        # first row. For the second turn, it would return the nth column, with n
-
-        # being the coordinate's row
-
+        # Kembalikan baris/kolom berikutnya yang tersedia untuk belokan dan koordinat tertentu.
+        # Jika giliran pertama indeksnya adalah 0 maka next_line akan mengembalikannya
+        # baris pertama. Untuk putaran kedua, kolom ke-n akan dikembalikan, dengan n
+        # menjadi baris koordinat
         def candidate_coords(turn=0, coordinate=(0,0)):
-
             if turn % 2 == 0:
-
                 return [(coordinate[0], column) for column in range(len(code_matrix))]
-
             else:
-
                 return [(row, coordinate[1]) for row in range(len(code_matrix))]
-
-
-
-        # The stack contains all possible paths currently being traversed.
+        # berisi semua kemungkinan lintasan yang dilalui
 
         def _walk_paths(buffer_size, completed_paths, partial_paths_stack = [Path()], turn = 0, candidates = candidate_coords()):
-
-        
-
-            path = partial_paths_stack.pop()
-
-            
-
+            path = partial_paths_stack.pop()            
             for coord in candidates:
-
                 try:
-
                     new_path = path + Path([coord])
-
-                
-
-                # Skip coordinate if it has already been visited
-
+                # Lewati koordinat jika sudah pernah dikunjungi (Tidak ada token yang dilalui dua kali)
                 except DuplicatedCoordinateException:
-
                     continue
 
+                # Jalur lengkap ditambahkan ke daftar pengembalian akhir dan dihapus dari tumpukan jalur parsial
+                if len(new_path.coords) == buffer_size:
+                    completed_paths.append(new_path) 
+                else: # Tambahkan jalur parsial baru yang lebih panjang kembali ke tumpukan
+                    partial_paths_stack.append(new_path) 
+                    _walk_paths(buffer_size, completed_paths, partial_paths_stack, turn + 1, candidate_coords(turn + 1, coord))
+        _walk_paths(buffer_size, completed_paths)
+        return completed_paths
 
+    def generate_paths(buffer_size, max_rows, max_columns):
+        completed_paths = []
+        """ Mengembalikan baris/kolom berikutnya yang tersedia untuk belokan dan koordinat tertentu.
+        Jika giliran pertama indeksnya adalah 0 sehingga next_line akan mengembalikan 
+        baris pertama. Untuk putaran kedua, kolom ke-n akan dikembalikan, dengan n menjadi baris koordinat """
 
-                # Full path is added to the final return list and removed from the partial paths stack
+        def candidate_coords(turn=0, coordinate=(0,0)):
+            row, col = coordinate
+            candidates = []
+            if row < max_rows - 1:
+                candidates.append((row + 1, col))  # Langkah ke bawah
+            if col < max_columns - 1:
+                candidates.append((row, col + 1))  # Langkah ke kanan
+            return candidates
+
+        def _walk_paths(buffer_size, completed_paths, partial_paths_stack=[Path()], turn=0, candidates=candidate_coords()):
+            path = partial_paths_stack.pop()
+
+            for coord in candidates:
+                try:
+                    new_path = path + Path([coord])
+                except DuplicatedCoordinateException:
+                    continue
 
                 if len(new_path.coords) == buffer_size:
-
                     completed_paths.append(new_path) 
-
-                else: # Add new, lengthier partial path back into the stack
-
+                else:
                     partial_paths_stack.append(new_path) 
-
                     _walk_paths(buffer_size, completed_paths, partial_paths_stack, turn + 1, candidate_coords(turn + 1, coord))
 
-
-
         _walk_paths(buffer_size, completed_paths)
-
         return completed_paths
-        
-    paths = [(path, PathScore(path, sequences, buffer_size).compute()) for path in generate_paths(buffer_size)]
+
+    #Membedakan cara kerja dalam memperoleh lintasan untuk matriks persegi dan tidak
+    if (matrix_width == matrix_height):
+        paths = [(path, PathScore(path, sequences, buffer_size).compute()) for path in generate_paths_square(buffer_size)]
+    else:
+        paths = [(path, PathScore(path, sequences, buffer_size).compute()) for path in generate_paths(buffer_size, len(code_matrix), len(code_matrix[0]))]
 
     max_path = max(paths, key=lambda path: path[1])
 
@@ -361,8 +287,6 @@ while (running == True):
                 file.write(f"{sumbuX[i]} {sumbuY[i]}\n")
             file.write("\nExecution Time:\n")
             file.write(f"{round(execution_time*1000)} ms\n")
-
-    # [(0, 0), (1, 0), (1, 3), (3, 3), (3, 1), (0, 1), (0, 3), (2, 3), (2, 0), (4, 0), (4, 2)] -> Should traverse all sequences, finishes in ~40 seconds
 
     # Memperbaiki urutan koordinat sebelum mencetak
 
@@ -428,26 +352,25 @@ while (running == True):
                 if response == 'y':
                     print("Please input name of the file you would like to save to the test folder (without the .txt extension)")
                     print(">> ", end = "")
-                    filename = "./test/" + input() + ".txt"
+                    filename = "../test/" + input() + ".txt"
                     save_to_txt(max_score, solution, buffer_size, sumbuX, sumbuY, execution_time, filename)
                     print("Solution has been saved to ", filename, " !")
-                check = False
-        else:
-            print("Invalid input. Please enter 'y' or 'n'.")
-            check = True
-            while check == True:
-                print("Would you like to solve another breach protocol? (y/n): ")
-                response = input(">> ").strip().lower()
-                if response == 'y' or response == 'n':
-                    if response == 'y':
-                        os.system("cls" if os.name == "nt" else "clear")
-                    else:
-                        print(Fore.RED + "Thank you for using Cyberpunk 2077 Breach Protocol Solver by Aland Mulia Pratama - 13522124!")
-                        print("Goodbye!")
-                        running = False
+                    check = False
+                elif response == 'n':
                     check = False
                 else:
                     print("Invalid input. Please enter 'y' or 'n'.")
-
-                
-
+        check = True
+        while check == True:
+            print("Would you like to solve another breach protocol? (y/n): ")
+            response = input(">> ").strip().lower()
+            if response == 'y' or response == 'n':
+                if response == 'y':
+                    os.system("cls" if os.name == "nt" else "clear")
+                else:
+                    print(Fore.RED + "Thank you for using Cyberpunk 2077 Breach Protocol Solver by Aland Mulia Pratama - 13522124!")
+                    print("Goodbye!")
+                    running = False
+                check = False # menghentikan program
+            else:
+                print("Invalid input. Please enter 'y' or 'n'.")
